@@ -32,6 +32,8 @@ ${app}</script>
 </html>
 `;
 fs.writeFileSync(path.join(__dirname, "public", "index.html"), local);
+// Cópia na raiz para o GitHub Pages (Settings → Pages → branch main, pasta / root).
+fs.writeFileSync(path.join(__dirname, "index.html"), local);
 
 const artifact = `${TITLE}
 ${FONTS}
@@ -43,4 +45,4 @@ ${mascot}
 ${app}</script>
 `;
 fs.writeFileSync(path.join(__dirname, "dist", "artifact.html"), artifact);
-console.log("ok: public/index.html e dist/artifact.html");
+console.log("ok: public/index.html, index.html (GitHub Pages) e dist/artifact.html");

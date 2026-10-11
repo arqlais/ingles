@@ -134,6 +134,7 @@
       const sample = await window.claude.use("sample");
       return sample ? { ask: (prompt) => sample.json(prompt, { modelTier: "quick", cache: false }) } : null;
     }
+    if (location.hostname.endsWith("github.io")) return null; // site estático: sem servidor para o professor
     if (location.protocol.startsWith("http")) {
       return {
         ask: async (prompt) => {
@@ -598,7 +599,7 @@ Reply with only a JSON object: {"score":0,"feedback_pt":"...","mistakes":[{"wron
     const tabs = `<div class="seg">${modes.map(([k, l, ic]) => `<button class="seg-btn" data-mode="${k}" aria-pressed="${pr.mode === k}" ${pr.busy ? "disabled" : ""}>${icon(ic)}${l}</button>`).join("")}</div>`;
     let body;
     if (tutor === undefined) body = `<section class="panel"><p class="muted">Conectando o professor…</p></section>`;
-    else if (tutor === null) body = `<section class="panel start-card">${mascot("think", 110)}<div class="stack"><h2>Professor indisponível aqui</h2><p class="muted">${IN_ARTIFACT ? "Esta visualização não permite usar o Claude. Abra a página no claude.ai, com sua conta." : "Rode o projeto com npm start e uma chave de API para usar o professor."} O curso e a revisão funcionam normalmente.</p></div></section>`;
+    else if (tutor === null) body = `<section class="panel start-card">${mascot("think", 110)}<div class="stack"><h2>Professor indisponível aqui</h2><p class="muted">${IN_ARTIFACT ? "Esta visualização não permite usar o Claude. Abra a página no claude.ai, com sua conta." : location.hostname.endsWith("github.io") ? "Nesta versão do GitHub o professor IA não funciona. Para conversar, tirar dúvidas e corrigir textos, use a versão no claude.ai." : "Rode o projeto com npm start e uma chave de API para usar o professor."} O curso e a revisão funcionam normalmente.</p></div></section>`;
     else if (pr.mode === "chat") body = profChat();
     else if (pr.mode === "doubt") body = profDoubt();
     else body = profFix();
