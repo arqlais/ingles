@@ -13,8 +13,11 @@ const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", "
 
 function extractJson(text) {
   try { return JSON.parse(text); } catch (e) { /* tenta achar o objeto */ }
-  const a = text.indexOf("{"), b = text.lastIndexOf("}");
-  if (a >= 0 && b > a) return JSON.parse(text.slice(a, b + 1));
+  const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fence) { try { return JSON.parse(fence[1]); } catch (e) { /* segue */ } }
+  const starts = [text.indexOf("{"), text.indexOf("[")].filter((i) => i >= 0);
+  const a = Math.min(...starts), b = Math.max(text.lastIndexOf("}"), text.lastIndexOf("]"));
+  if (starts.length && b > a) return JSON.parse(text.slice(a, b + 1));
   throw new Error("resposta sem JSON");
 }
 
@@ -28,7 +31,7 @@ async function tutor(req, res) {
     client = client || new Anthropic();
     const msg = await client.messages.create({
       model: MODEL,
-      max_tokens: 700,
+      max_tokens: 1500,
       messages: [{ role: "user", content: prompt }]
     });
     const text = msg.content.filter((c) => c.type === "text").map((c) => c.text).join("");
@@ -50,4 +53,4 @@ http.createServer((req, res) => {
     res.writeHead(200, { "content-type": TYPES[path.extname(file)] || "application/octet-stream" });
     res.end(buf);
   });
-}).listen(PORT, () => console.log(`Inglês de Viagem rodando em http://localhost:${PORT}`));
+}).listen(PORT, () => console.log(`Bubi English rodando em http://localhost:${PORT}`));

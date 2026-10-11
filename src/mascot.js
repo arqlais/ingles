@@ -1,55 +1,63 @@
-// Malu, a malinha mascote. Desenho em traço (line art) com SVG.
-// mascot(mood, size): mood = "wave" | "think" | "cheer" | "talk"
+// Bubi, o balãozinho de fala mascote. Desenho em traço (line art) com SVG.
+// mascot(mood, size): mood = "wave" | "think" | "talk" | "cheer"
 
 function mascot(mood, size) {
   mood = mood || "wave";
   size = size || 160;
   const S = 'stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+  const hand = (x, y) => `<circle cx="${x}" cy="${y}" r="6" fill="var(--surface)" ${S}/>`;
 
+  const eye = (x, y) => `<circle cx="${x}" cy="${y}" r="5.2" fill="var(--ink)"/><circle cx="${x + 1.7}" cy="${y - 1.7}" r="1.7" fill="var(--surface)"/>`;
   const eyes = {
-    wave:  '<circle cx="86" cy="106" r="5" fill="var(--ink)"/><circle cx="116" cy="106" r="5" fill="var(--ink)"/><circle cx="87.6" cy="104.4" r="1.6" fill="var(--surface)"/><circle cx="117.6" cy="104.4" r="1.6" fill="var(--surface)"/>',
-    talk:  '<circle cx="86" cy="106" r="5" fill="var(--ink)"/><circle cx="116" cy="106" r="5" fill="var(--ink)"/><circle cx="87.6" cy="104.4" r="1.6" fill="var(--surface)"/><circle cx="117.6" cy="104.4" r="1.6" fill="var(--surface)"/>',
-    think: '<circle cx="89" cy="102" r="5" fill="var(--ink)"/><circle cx="119" cy="102" r="5" fill="var(--ink)"/><circle cx="91" cy="100.5" r="1.6" fill="var(--surface)"/><circle cx="121" cy="100.5" r="1.6" fill="var(--surface)"/>',
-    cheer: `<path d="M80 108 q6 -8 12 0" fill="none" ${S}/><path d="M110 108 q6 -8 12 0" fill="none" ${S}/>`
+    wave: eye(86, 98) + eye(114, 98),
+    talk: eye(86, 98) + eye(114, 98),
+    think: eye(90, 94) + eye(118, 94),
+    cheer: `<path d="M79 100 q7 -9 14 0" fill="none" ${S}/><path d="M107 100 q7 -9 14 0" fill="none" ${S}/>`
   }[mood];
 
   const mouth = {
-    wave:  `<path d="M92 120 q9 9 18 0" fill="none" ${S}/>`,
-    think: `<path d="M98 123 h10" fill="none" ${S}/>`,
-    talk:  `<ellipse cx="101" cy="123" rx="6" ry="5" fill="var(--ink)"/>`,
-    cheer: `<path d="M89 118 h24 q0 14 -12 14 q-12 0 -12 -14z" fill="var(--ink)" ${S}/><path d="M95 127 q6 -4 12 0 q-6 5 -12 0z" fill="var(--pink-strong)"/>`
+    wave: `<path d="M91 112 q9 9 18 0" fill="none" ${S}/>`,
+    think: `<path d="M97 115 h12" fill="none" ${S}/>`,
+    talk: `<path d="M92 110 h16 q0 11 -8 11 q-8 0 -8 -11z" fill="var(--ink)" ${S}/>`,
+    cheer: `<path d="M88 110 h24 q0 15 -12 15 q-12 0 -12 -15z" fill="var(--ink)" ${S}/><path d="M94 119 q6 -4 12 0 q-6 5 -12 0z" fill="var(--pink-strong)"/>`
   }[mood];
 
   const arms = {
-    wave:  `<path d="M52 122 q-16 8 -20 24" fill="none" ${S}/><circle cx="31" cy="149" r="5" fill="var(--surface)" ${S}/>
-            <path d="M150 116 q18 -6 22 -30" fill="none" ${S}/><circle cx="173" cy="82" r="6" fill="var(--surface)" ${S}/>
-            <path d="M182 66 l5 -6 M188 76 l8 -2 M176 60 l1 -8" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>`,
-    think: `<path d="M52 122 q-16 8 -20 24" fill="none" ${S}/><circle cx="31" cy="149" r="5" fill="var(--surface)" ${S}/>
-            <path d="M150 120 q16 6 4 16 q-10 6 -26 -6" fill="none" ${S}/><circle cx="127" cy="129" r="6" fill="var(--surface)" ${S}/>
-            <circle cx="160" cy="62" r="4" fill="none" stroke="var(--ink)" stroke-width="2.5"/><circle cx="172" cy="46" r="6" fill="none" stroke="var(--ink)" stroke-width="2.5"/><path d="M178 20 a12 12 0 1 1 6 22" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/><circle cx="186" cy="46" r="1.8" fill="var(--ink)"/>`,
-    talk:  `<path d="M52 122 q-16 8 -20 24" fill="none" ${S}/><circle cx="31" cy="149" r="5" fill="var(--surface)" ${S}/>
-            <path d="M150 122 q16 8 20 24" fill="none" ${S}/><circle cx="171" cy="149" r="5" fill="var(--surface)" ${S}/>`,
-    cheer: `<path d="M52 116 q-18 -6 -22 -30" fill="none" ${S}/><circle cx="29" cy="82" r="6" fill="var(--surface)" ${S}/>
-            <path d="M150 116 q18 -6 22 -30" fill="none" ${S}/><circle cx="173" cy="82" r="6" fill="var(--surface)" ${S}/>`
+    wave: `<path d="M40 112 q-16 6 -20 22" fill="none" ${S}/>${hand(19, 137)}
+           <path d="M160 104 q18 -6 20 -28" fill="none" ${S}/>${hand(180, 72)}
+           <path d="M190 58 l5 -6 M195 70 l8 -1 M183 52 l1 -8" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>`,
+    think: `<path d="M40 112 q-16 6 -20 22" fill="none" ${S}/>${hand(19, 137)}
+            <path d="M160 112 q16 10 2 20 q-10 4 -30 -8" fill="none" ${S}/>${hand(131, 124)}
+            <circle cx="164" cy="44" r="4" fill="none" stroke="var(--ink)" stroke-width="2.5"/><circle cx="176" cy="28" r="6" fill="none" stroke="var(--ink)" stroke-width="2.5"/>`,
+    talk: `<path d="M40 112 q-16 6 -20 22" fill="none" ${S}/>${hand(19, 137)}
+           <path d="M160 112 q16 6 20 22" fill="none" ${S}/>${hand(181, 137)}`,
+    cheer: `<path d="M40 104 q-18 -6 -20 -28" fill="none" ${S}/>${hand(20, 72)}
+            <path d="M160 104 q18 -6 20 -28" fill="none" ${S}/>${hand(180, 72)}`
   }[mood];
 
-  const sparkle = (x, y, r, fill) => `<path d="M${x} ${y - r} C${x + r * 0.15} ${y - r * 0.15} ${x + r * 0.15} ${y - r * 0.15} ${x + r} ${y} C${x + r * 0.15} ${y + r * 0.15} ${x + r * 0.15} ${y + r * 0.15} ${x} ${y + r} C${x - r * 0.15} ${y + r * 0.15} ${x - r * 0.15} ${y + r * 0.15} ${x - r} ${y} C${x - r * 0.15} ${y - r * 0.15} ${x - r * 0.15} ${y - r * 0.15} ${x} ${y - r}z" fill="${fill}" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>`;
-  const extras = mood === "cheer"
-    ? sparkle(20, 40, 12, "var(--ink)") + sparkle(186, 128, 9, "var(--surface)") + sparkle(42, 186, 7, "var(--surface)")
-    : mood === "wave" ? sparkle(24, 70, 9, "var(--surface)") + sparkle(178, 170, 7, "var(--ink)") : "";
+  const sparkle = (x, y, r, fill) => {
+    const k = r * 0.16;
+    return `<path d="M${x} ${y - r} C${x + k} ${y - k} ${x + k} ${y - k} ${x + r} ${y} C${x + k} ${y + k} ${x + k} ${y + k} ${x} ${y + r} C${x - k} ${y + k} ${x - k} ${y + k} ${x - r} ${y} C${x - k} ${y - k} ${x - k} ${y - k} ${x} ${y - r}z" fill="${fill}" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>`;
+  };
+  const extras = {
+    wave: sparkle(26, 46, 9, "var(--surface)") + sparkle(184, 170, 7, "var(--ink)"),
+    cheer: sparkle(100, 14, 11, "var(--ink)") + sparkle(28, 160, 8, "var(--surface)") + sparkle(178, 156, 9, "var(--surface)"),
+    think: "",
+    talk: sparkle(178, 50, 8, "var(--surface)")
+  }[mood];
 
-  return `<svg class="mascot" width="${size}" height="${size * 1.1}" viewBox="0 0 200 220" role="img" aria-label="Malu, a malinha mascote">
-    <ellipse cx="100" cy="212" rx="48" ry="5" fill="var(--ink)" opacity=".08"/>
+  // Corpo: balão de fala arredondado com rabinho à esquerda.
+  const body = "M120 156 L78 156 L52 182 L58 152 Q40 146 40 122 L40 88 Q40 46 82 46 L118 46 Q160 46 160 88 L160 116 Q160 156 120 156 Z";
+
+  return `<svg class="mascot" width="${size}" height="${size * 1.1}" viewBox="0 0 200 220" role="img" aria-label="Bubi, o mascote">
+    <ellipse cx="108" cy="212" rx="46" ry="5" fill="var(--ink)" opacity=".08"/>
     ${extras}
-    <path d="M84 186 v16" ${S}/><path d="M118 186 v16" ${S}/>
-    <path d="M72 204 q0 -6 12 -6 q8 0 8 6 z" fill="var(--ink)" ${S}/><path d="M110 204 q0 -6 8 -6 q12 0 12 6 z" fill="var(--ink)" ${S}/>
-    <path d="M80 62 v-14 a9 9 0 0 1 9 -9 h24 a9 9 0 0 1 9 9 v14" fill="none" ${S}/>
-    <rect x="50" y="60" width="102" height="128" rx="24" fill="var(--surface)" ${S}/>
-    <path d="M72 62 v124 M130 62 v124" stroke="var(--line-strong)" stroke-width="3" stroke-linecap="round"/>
-    <rect x="60" y="150" width="22" height="22" rx="6" fill="var(--butter-strong)" stroke="var(--ink)" stroke-width="2.4" transform="rotate(-10 71 161)"/>
-    <path d="M71 156 l1.8 3.6 4 .6 -2.9 2.8 .7 4 -3.6 -1.9 -3.6 1.9 .7 -4 -2.9 -2.8 4 -.6z" fill="var(--ink)" transform="rotate(-10 71 161)"/>
-    <path d="M124 160 c0 -6 8 -6 8 0 c0 -6 8 -6 8 0 c0 6 -8 10 -8 12 c0 -2 -8 -6 -8 -12z" fill="var(--pink-strong)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
-    <ellipse cx="76" cy="119" rx="6" ry="3.5" fill="var(--pink-strong)" opacity=".8"/><ellipse cx="126" cy="119" rx="6" ry="3.5" fill="var(--pink-strong)" opacity=".8"/>
+    <path d="M96 156 v38" ${S}/><path d="M122 156 v38" ${S}/>
+    <path d="M84 202 q0 -8 12 -8 q8 0 8 8 z" fill="var(--ink)" ${S}/><path d="M114 202 q0 -8 8 -8 q12 0 12 8 z" fill="var(--ink)" ${S}/>
+    <path d="${body}" fill="var(--surface)" ${S}/>
+    <path d="M100 46 q-6 -18 10 -22" fill="none" ${S}/><circle cx="112" cy="23" r="5" fill="var(--pink-strong)" stroke="var(--ink)" stroke-width="2.4"/>
+    <path d="M62 62 l3 -8 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 z" fill="var(--butter-strong)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+    <ellipse cx="72" cy="111" rx="6.5" ry="3.8" fill="var(--pink-strong)" opacity=".85"/><ellipse cx="128" cy="111" rx="6.5" ry="3.8" fill="var(--pink-strong)" opacity=".85"/>
     ${eyes}
     ${mouth}
     ${arms}

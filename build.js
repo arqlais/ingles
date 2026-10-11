@@ -6,7 +6,7 @@ const path = require("path");
 
 const src = (f) => fs.readFileSync(path.join(__dirname, "src", f), "utf8");
 const FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">';
-const TITLE = "<title>Inglês de Viagem</title>";
+const TITLE = "<title>Bubi English</title>";
 
 const css = src("styles.css"), body = src("body.html"), data = src("data.js"), mascot = src("mascot.js"), app = src("app.js");
 
