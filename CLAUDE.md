@@ -1,55 +1,62 @@
 # Bubi English
 
-Curso completo de inglês da Laís, do A1 ao B1, com professor de IA. Ela tem base de alguns meses de curso e quer aprender de verdade, para usar no dia a dia, no trabalho e em viagens.
+Curso completo de inglês da Laís, do A1 ao B1, contado como uma série. A Bia, arquiteta brasileira, se muda para Nova York e cada unidade é um episódio da vida dela. Laís já fez alguns meses de curso tradicional e achou repetitivo: aqui a ideia é aprender por história, contexto, fala e revisão espaçada, com explicações bem simples em português.
 
-## Como o projeto funciona
+## Arquivos
 
-- `src/` é a fonte única. Nunca edite `public/` ou `dist/` à mão: rode `npm run build`.
-  - `data.js`: o conteúdo do curso.
-    - `UNITS`: 24 unidades (8 por nível). Cada uma tem `grammar` (regra em português + exemplo), `vocab` (10 pares en/pt), `sentences` (8 frases com a lacuna entre colchetes, resposta certa primeiro: `"I [am|is|are] from Brazil."`) e `writing` (proposta de texto).
-    - `PLACEMENT`: teste de nível com 16 perguntas em dificuldade crescente; `placementResult()` diz em qual unidade começar.
-    - `TOPICS`: temas de conversa do professor IA.
-  - `app.js`: app em JavaScript puro, sem framework. Renderiza por template string; todo texto vindo da IA passa por `esc()`.
-  - `mascot.js`: o **Bubi**, balãozinho de fala em line art (SVG). `mascot(mood, size)` com humores `wave`, `think`, `talk`, `cheer`. Cores vêm dos tokens, então funciona nos dois temas.
-  - `styles.css`: tokens no `:root` com tema claro e escuro. Visual pastel (menta, pêssego, rosa, lilás, céu, manteiga), cartões bem arredondados, botões-pílula pretos, barra lateral no desktop e barra inferior no celular.
-  - `body.html`: casca da página (barra lateral, `<main id="app">`).
-- `build.js` gera `public/index.html` (local) e `dist/artifact.html` (Artifact no claude.ai).
-- `server.js` serve `public/` e expõe `POST /api/tutor`, que chama a API do Claude (modelo em `TUTOR_MODEL`, padrão `claude-haiku-5-5`) e devolve `{ data }` já em JSON.
+- `src/` é a fonte única. Nunca edite `index.html`, `public/` ou `dist/` à mão: rode `npm run build`.
+  - `units-a1.js`, `units-a2.js`, `units-b1.js`: as 3 temporadas (8 episódios cada). Formato de cada unidade descrito no topo de `data.js`:
+    - `episode`: cena, falas `[personagem, en, pt]` e 2 perguntas de compreensão.
+    - `vocab`: 10 itens `[en, pt, pronúncia]`. Pronúncia lida como português, sílaba forte em MAIÚSCULA, `th`/`dh` = língua entre os dentes, vogal dobrada = longa.
+    - `lesson`: `why` (pra que serve), 4 `parts` `[título, explicação simples, exemplos]`, 3 `mistakes` `[errado, certo, por quê]`, `tip`.
+    - `sentences`: 8 frases com a lacuna entre colchetes, resposta certa primeiro: `"I [am|is|are] from Brazil."`.
+    - `mission`: `goal`, `roleplay` (cena em inglês para a IA), `writing` e `model` (exemplo de resposta).
+  - `data.js`: `LEVELS` (temporadas), `CAST` (personagens, cor e tom de voz), `UNITS`, `PLACEMENT` (teste de nível, 16 perguntas), `TOPICS` (conversa livre) e `PRONUNCIATION` (8 lições de sons, com pares para o jogo "ouça e escolha").
+  - `app.js`: app em JavaScript puro. Renderiza por template string; todo texto vindo da IA passa por `esc()`.
+  - `mascot.js`: o **Bubi**, balão de fala 3D em degradê (lilás, rosa, pêssego) com reflexo de vidro e um acento agudo (´) na cabeça, sua marca. `mascot(mood, size)` com `wave`, `think`, `talk`, `cheer`; `logoMark(size)` é o símbolo do app (Bubi num ícone escuro arredondado). Cores fixas do personagem, para ficar igual nos dois temas.
+  - `styles.css`: estilo glass. Tokens no `:root` com tema claro e escuro, fundo lilás com manchas de luz (`.backdrop`), cartões de vidro (`.glass`) e cartões brancos sólidos (`.solid`) para o que pede foco, rosa (`--accent`) e violeta (`--violet`) como destaques. Fontes: Plus Jakarta Sans (texto) e Fredoka (marca).
+  - `body.html`: casca (fundo, barra lateral, `<main id="app">`).
+- `build.js` gera `public/index.html` (local), `index.html` na raiz (GitHub Pages) e `dist/artifact.html` (Artifact no claude.ai).
+- `server.js` serve `public/` e expõe `POST /api/tutor`, que chama a API do Claude (`TUTOR_MODEL`, padrão `claude-haiku-5-5`) e devolve `{ data }` em JSON.
 
-## Estrutura de aprendizado
+## Método
 
-Cada unidade tem 5 etapas: Vocabulário → Gramática → Prática → Fala → Escrita.
-- **Prática** gera ~13 exercícios a partir dos dados: significado (en→pt e pt→en), completar lacuna, montar frase, ditado (se houver voz) e tradução digitada. Concluir a unidade exige `PASS` (70%).
-- Ao concluir, as 10 palavras entram na **revisão espaçada** (`state.srs`), com intervalos `SRS_DAYS` = 1, 3, 7, 14, 30, 60 dias. A partir da caixa 2 o cartão inverte (pt → en).
-- **Professor IA** tem 3 modos: conversa por tema (com correção em português a cada mensagem), tirar dúvidas e corrigir texto. A escrita das unidades e os "+5 exercícios com IA" também usam o professor.
-- Meta diária: `DAILY_GOAL` XP.
+Cada episódio tem 6 etapas: Episódio → Palavras → Entenda → Pratique → Fale → Missão.
+- **Episódio**: ouvir o diálogo (voz com tom diferente por personagem), primeiro sem tradução, e responder 2 perguntas.
+- **Palavras**: áudio normal e lento, dica de pronúncia e microfone.
+- **Entenda**: gramática simples; botão "explica de outro jeito" (IA) em cada parte.
+- **Pratique**: ~13 exercícios gerados dos dados (significado, lacuna, montar frase, ditado de uma fala do episódio, tradução). Concluir exige `PASS` (70%). "Por que errei?" (IA) e "+5 exercícios com IA".
+- **Fale**: shadowing das falas do episódio, com microfone.
+- **Missão**: viver a cena com a IA (3 mensagens) ou escrever o texto (correção da IA, com exemplo de resposta).
+- Ao concluir, as 10 palavras entram na revisão espaçada (`SRS_DAYS` = 1, 3, 7, 14, 30, 60). A partir da caixa 2 o cartão inverte (pt → en).
 
-## Dois ambientes, um código
+## Onde roda e o que funciona
 
-`app.js` detecta onde está (`IN_ARTIFACT`):
-- **Artifact**: progresso em `claude.use("db")` (documento privado `data/users/<id>/course`), professor em `claude.use("sample")`.
-- **Local**: progresso em `localStorage` (`bubi-english:v2`), professor via `fetch("/api/tutor")`.
+`app.js` detecta o ambiente:
+- **Artifact (claude.ai)**: progresso em `claude.use("db")` (doc privado `data/users/<id>/bubi`), professor via `claude.use("sample")`. Microfone indisponível (o artifact não libera).
+- **GitHub Pages**: progresso no `localStorage` (`bubi-english:v3`), sem professor IA, microfone funciona no Chrome/Edge.
+- **Local** (`npm start`): `localStorage`, professor via `/api/tutor`, microfone funciona.
 
-Mantenha as duas rotas funcionando ao mudar armazenamento ou professor. Todo pedido à IA termina com o formato JSON exato esperado.
+Mantenha as três rotas funcionando. Todo pedido à IA termina com o formato JSON exato esperado.
 
 ## Comandos
 
 ```bash
 npm install
-export ANTHROPIC_API_KEY=sk-ant-...   # chave do console.anthropic.com
-npm start                              # build + http://localhost:3000
+export ANTHROPIC_API_KEY=sk-ant-...
+npm start          # build + http://localhost:3000
+npm run build      # só gera os HTML
 ```
 
 ## Convenções
 
-- Interface e explicações em português do Brasil; exemplos, frases e falas do professor em inglês.
-- Explicações curtas, claras e encorajadoras. Nada de jargão sem exemplo.
-- Ao adicionar unidade: siga o formato de `UNITS` (4 regras, 10 palavras, 8 frases com 3 opções sem repetição, 1 proposta de escrita) e confira com `node -e` que toda frase tem exatamente um `[...]`.
-- O Bubi fala com a usuária em português, de forma curta e animada. Mantenha o traço preto e os detalhes em rosa e amarelo ao criar novas poses.
+- Interface e explicações em português do Brasil, bem simples, como para quem está começando do zero. Exemplos curtos e do dia a dia. Nada de termo técnico sem exemplo.
+- Diálogos e falas em inglês natural, no nível do episódio.
+- Ao criar episódio: mesmo formato, falas só de personagens do `CAST`, 3 opções sem repetição por frase, e confira com `node -e` que toda frase tem exatamente um `[...]`.
+- O Bubi fala com a usuária em português, curto e animado.
 
 ## Próximos passos
 
-- **B2**: past perfect, used to / be used to, modais de dedução (must have, might have), terceira condicional, gerúndio × infinitivo, conectores.
-- Prática de pronúncia com reconhecimento de voz (Web Speech API, só local).
-- Leituras curtas por nível com perguntas de interpretação.
+- **Temporada 4 (B2)**: past perfect, used to / be used to, modais de dedução, terceira condicional, gerúndio × infinitivo, conectores.
+- Leituras curtas por episódio (o "jornal" do bairro da Bia) com perguntas.
 - Lembrete diário de estudo.

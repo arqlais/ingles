@@ -5,10 +5,10 @@ const fs = require("fs");
 const path = require("path");
 
 const src = (f) => fs.readFileSync(path.join(__dirname, "src", f), "utf8");
-const FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">';
+const FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">';
 const TITLE = "<title>Bubi English</title>";
 
-const css = src("styles.css"), body = src("body.html"), data = src("data.js"), mascot = src("mascot.js"), app = src("app.js");
+const css = src("styles.css"), body = src("body.html"), data = ["units-a1.js", "units-a2.js", "units-b1.js", "data.js"].map(src).join("\n"), mascot = src("mascot.js"), app = src("app.js");
 
 fs.mkdirSync(path.join(__dirname, "public"), { recursive: true });
 fs.mkdirSync(path.join(__dirname, "dist"), { recursive: true });
